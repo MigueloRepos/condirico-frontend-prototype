@@ -108,15 +108,20 @@ function Storefront() {
       </div>
 
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-md">
-        <div className="mx-auto grid h-18 max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6 lg:h-20 lg:px-8">
+        <div className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6 lg:px-8">
           <Brand />
-          <nav className="mx-auto hidden items-center gap-7 text-sm font-semibold lg:flex">
+          <nav className="mx-auto hidden items-center gap-6 text-[13px] font-semibold lg:flex">
             <a href="#inicio" className="text-primary">Inicio</a>
             <a href="#categorias" className="transition-colors hover:text-primary">Categorías</a>
             <a href="#destacados" className="transition-colors hover:text-primary">Productos</a>
             <a href="#ofertas" className="flex items-center gap-1 transition-colors hover:text-primary">Ofertas <ChevronDown className="size-3" /></a>
           </nav>
           <div className="flex items-center justify-end gap-1 sm:gap-2">
+            <label className="relative hidden xl:block">
+              <span className="sr-only">Buscar productos</span>
+              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <input value={query} onChange={(event) => setQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") document.querySelector("#destacados")?.scrollIntoView({ behavior: "smooth" }); }} placeholder="¿Qué estás buscando?" className="h-9 w-56 rounded-full border bg-muted/50 pl-9 pr-3 text-xs outline-none transition-all focus:w-64 focus:bg-background focus:ring-2 focus:ring-ring" />
+            </label>
             <Button variant="ghost" size="icon" className="hidden rounded-full sm:inline-flex" aria-label="Mi cuenta"><CircleUserRound /></Button>
             <Button variant="ghost" size="icon" className="relative rounded-full" onClick={() => setCartOpen(true)} aria-label={`Carrito con ${cartCount} productos`}>
               <ShoppingCart />
@@ -128,32 +133,35 @@ function Storefront() {
         {menuOpen && <nav className="border-t bg-background px-4 py-4 lg:hidden animate-in slide-in-from-top-2"><div className="mx-auto grid max-w-7xl gap-1">{["Inicio", "Categorías", "Productos", "Ofertas"].map((item) => <a key={item} href={`#${item === "Productos" ? "destacados" : item.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="rounded-md px-3 py-3 text-sm font-semibold hover:bg-muted">{item}</a>)}</div></nav>}
       </header>
 
-      <section className="relative min-h-[570px] overflow-hidden bg-secondary lg:min-h-[620px]">
-        <img src={heroImage} width={1536} height={1024} alt="Bolsa de compras con alimentos frescos y productos de despensa" className="absolute inset-0 h-full w-full object-cover object-[66%_center] sm:object-center" />
-        <div className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/90 to-secondary/0" />
-        <div className="relative mx-auto flex min-h-[570px] max-w-7xl items-center px-4 pb-20 pt-14 sm:px-6 lg:min-h-[620px] lg:px-8">
-          <div className="max-w-xl animate-rise">
-            <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-brand-soft px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-primary"><Leaf className="size-3.5" /> Tu supermercado de confianza</span>
-            <h1 className="text-4xl font-extrabold leading-[1.08] text-brand-deep sm:text-5xl lg:text-7xl">Todo lo que necesitas<br /><span className="text-offer">en un solo lugar</span></h1>
-            <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground sm:text-lg">Productos de calidad, precios que te convienen y la comodidad de recibirlos donde quieras.</p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button asChild size="lg" className="h-12 rounded-full bg-offer px-7 font-bold text-offer-foreground shadow-lg hover:bg-offer/90 hover:-translate-y-0.5"><a href="#destacados">Comprar ahora <ArrowRight /></a></Button>
-              <span className="text-sm font-semibold text-primary">Más de 1.500 productos</span>
+      <section className="bg-secondary">
+        <div className="mx-auto grid max-w-[1536px] lg:grid-cols-2">
+          <div className="flex items-center px-4 py-14 sm:px-10 sm:py-16 lg:min-h-[570px] lg:justify-end lg:px-14 lg:py-20">
+            <div className="w-full max-w-xl animate-rise">
+              <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-brand-soft px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-primary sm:text-xs"><Leaf className="size-3.5" /> Tu supermercado de confianza</span>
+              <h1 className="text-4xl font-extrabold leading-[1.07] text-brand-deep sm:text-5xl lg:text-6xl">Todo lo que necesitas<br /><span className="text-offer">en un solo lugar</span></h1>
+              <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground">Productos de calidad, precios que te convienen y la comodidad de recibirlos donde quieras.</p>
+              <div className="mt-8 flex flex-wrap items-center gap-5">
+                <Button asChild size="lg" className="h-12 rounded-full bg-offer px-7 font-bold text-offer-foreground shadow-lg transition-all hover:-translate-y-1 hover:bg-offer/90 hover:shadow-xl"><a href="#destacados">Comprar ahora <ArrowRight /></a></Button>
+                <span className="flex items-center gap-2 text-sm font-semibold text-primary"><span className="size-2 rounded-full bg-primary" /> Más de 1.500 productos</span>
+              </div>
             </div>
+          </div>
+          <div className="relative min-h-[320px] overflow-hidden sm:min-h-[420px] lg:min-h-[570px]">
+            <img src={heroImage} width={1536} height={1024} alt="Bolsa de compras con alimentos frescos y productos de despensa" className="absolute inset-0 h-full w-full object-cover object-[68%_center] transition-transform duration-1000 hover:scale-[1.02]" />
           </div>
         </div>
       </section>
 
-      <section className="relative z-10 mx-auto -mt-9 max-w-5xl px-4 sm:px-6">
+      <section className="relative z-10 mx-auto -mt-8 max-w-5xl px-4 sm:px-6">
         <div className="grid grid-cols-3 divide-x rounded-lg border bg-card px-3 py-5 shadow-xl shadow-primary/10 sm:px-8">
           {[ ["+1.5K", "Productos"], ["24h", "Entrega rápida"], ["4.9", "Valoración"] ].map(([value, label]) => <div key={label} className="text-center"><strong className="block text-xl text-primary sm:text-2xl">{value}</strong><span className="text-[10px] font-semibold text-muted-foreground sm:text-xs">{label}</span></div>)}
         </div>
       </section>
 
-      <section id="categorias" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <section id="categorias" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <SectionTitle eyebrow="Encuentra lo que buscas" title="Compra por categoría" />
         <div className="mt-9 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-5">
-          {categories.map((category) => <a key={category.name} href="#destacados" className="group relative aspect-[4/5] overflow-hidden rounded-lg bg-muted shadow-sm sm:aspect-[4/3] lg:aspect-[4/5]">
+          {categories.map((category) => <a key={category.name} href="#destacados" className="group relative aspect-[4/5] overflow-hidden rounded-lg border bg-muted shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:aspect-[4/3] lg:aspect-[4/5]">
             <div className={`absolute inset-0 bg-cover transition-transform duration-500 group-hover:scale-105 ${category.pos}`} style={{ backgroundImage: `url(${categoriesImage})`, backgroundSize: "400% 100%" }} />
             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-brand-deep via-brand-deep/55 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4 text-primary-foreground sm:p-5"><h3 className="max-w-[85%] text-sm font-bold leading-tight sm:text-lg">{category.name}</h3><ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" /></div>
@@ -161,7 +169,7 @@ function Storefront() {
         </div>
       </section>
 
-      <section id="destacados" className="bg-muted/70 py-20">
+      <section id="destacados" className="bg-muted/70 py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
             <SectionTitle eyebrow="Elegidos para ti" title="Productos destacados" align="left" />
@@ -193,7 +201,7 @@ function Storefront() {
         </div>
       </section>
 
-      <section id="ofertas" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <section id="ofertas" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="relative min-h-[380px] overflow-hidden rounded-lg bg-brand-deep">
           <img src={promoImage} loading="lazy" width={1536} height={768} alt="Compra semanal con alimentos y productos del hogar" className="absolute inset-0 h-full w-full object-cover object-[64%_center]" />
           <div className="absolute inset-0 bg-gradient-to-r from-brand-deep via-brand-deep/90 to-brand-deep/5" />
